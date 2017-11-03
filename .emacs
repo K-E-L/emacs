@@ -57,10 +57,6 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-;; Display emojis
-;; package-install: emojify
-;;(add-hook 'after-init-hook #'global-emojify-mode)
-
 ;; Turn off mouse
 ;; package-install: disable-mouse
 (require 'disable-mouse)
@@ -92,6 +88,11 @@
 ;; package-install: flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+;; Comment / Uncomment Region key binding
+(bind-keys*
+ ("C-c C-c" . comment-region)
+ ("C-u C-u" . uncomment-region))
+
 ;; Other stuff
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -109,7 +110,8 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
+    (use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
+ '(paradox-github-token t)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
