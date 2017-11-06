@@ -89,6 +89,7 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; Comment / Uncomment Region key binding
+;; package-install: use-package
 (bind-keys*
  ("C-c C-c" . comment-region)
  ("C-u C-u" . uncomment-region))
