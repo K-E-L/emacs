@@ -93,7 +93,7 @@
 ;; Comment / Uncomment Region key binding
 ;; package-install: use-package
 (bind-keys*
- ("C-c C-c" . comment-region)
+ ("C-' C-'" . comment-region)
  ("C-u C-u" . uncomment-region))
 
 ;; Turn off scrollbar
@@ -104,11 +104,17 @@
 (add-to-list 'default-frame-alist '(alpha . (92 . 92)))
 
 ;; Set the escape key for evil mode and start
+;; package-install: evil-escape
 (evil-escape-mode)
 (setq-default evil-escape-key-sequence "jk")
 
 ;; Start Evil Mode 
+;; package-install: evil
 (evil-mode)
+
+;; Evil Magit
+;; package-install: magit, evil-magit
+(evil-magit-init)
 
 ;; Other stuff
 (custom-set-variables
@@ -127,7 +133,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
+    (evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
  '(paradox-github-token t)
  '(tool-bar-mode nil))
 (custom-set-faces
