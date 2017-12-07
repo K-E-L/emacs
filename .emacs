@@ -27,7 +27,7 @@
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; start emacs with vertical split
-(split-window-right)
+;; (split-window-right)
 
 ;; start auto-complete with emacs
 ;; package-install: auto-complete
@@ -47,7 +47,9 @@
 (add-hook 'c++-mode-hook 'my:ac-c-header-init)
 (add-hook 'c-mode-hook 'my:ac-c-header-init)
 
-;; Find out how to get relative line numbers!
+;; Relative line numbers!
+;; (require 'linum-relative)
+;; (linum-mode)
 
 ;; Multiple cursors!!!
 ;; package-install: multiple-cursors
@@ -59,8 +61,8 @@
 
 ;; Turn off mouse
 ;; package-install: disable-mouse
-(require 'disable-mouse)
-(global-disable-mouse-mode)
+;; (require 'disable-mouse)
+;; (global-disable-mouse-mode)
 
 ;; Expand region
 ;; package-install: expand-region
@@ -94,6 +96,20 @@
  ("C-c C-c" . comment-region)
  ("C-u C-u" . uncomment-region))
 
+;; Turn off scrollbar
+(scroll-bar-mode -1)
+
+;; Set Transparency
+(set-frame-parameter (selected-frame) 'alpha '(92 . 92))
+(add-to-list 'default-frame-alist '(alpha . (92 . 92)))
+
+;; Set the escape key for evil mode and start
+(evil-escape-mode)
+(setq-default evil-escape-key-sequence "jk")
+
+;; Start Evil Mode 
+(evil-mode)
+
 ;; Other stuff
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -111,7 +127,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
+    (powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
  '(paradox-github-token t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -123,6 +139,26 @@
 
 ;; Set font size
 (set-face-attribute 'default nil :height 115)
+
+;; Set Internal Window Borders
+(set-fringe-mode 0)
+
+;; Set highlight to cyan
+(set-face-attribute 'region nil :background "#00ffff" :foreground "#000000")
+
+;; Set cursor color to orange
+(set-cursor-color "#ffa500")
+
+;; Remove bottom mode line
+(setq-default mode-line-format nil) 
+
+;; Turn on IDO mode
+(require 'ido)
+(ido-mode t)
+
+;; Start powerline
+;; (require 'powerline)
+;; (powerline-center-theme)
 
 ;; Other goodies
 ;; package-install: pacmacs
