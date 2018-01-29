@@ -1,5 +1,5 @@
 ;; Remove startup screen from emacs
-(setq inhibit-startup-screen t)
+;; (setq inhibit-startup-screen t)
 
 ;; start package.el with emacs
 (require 'package)
@@ -13,12 +13,11 @@
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/")
-  )
-
-;; For important compatibility libraries like cl-lib
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize) 
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+  
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
 
 ;; initialize package.el
 (package-initialize)
@@ -33,8 +32,8 @@
 ;; package-install: auto-complete
 (require 'auto-complete)
 ;; do default config for auto-complete
- (require 'auto-complete-config)
- (ac-config-default)
+(require 'auto-complete-config)
+(ac-config-default)
 
 ;; start yasnippet with emacs
 ;; package-install: yasnippet
@@ -93,7 +92,7 @@
 ;; Comment / Uncomment Region key binding
 ;; package-install: use-package
 (bind-keys*
- ("C-' C-'" . comment-region)
+ ("C-x C-x" . comment-region)
  ("C-u C-u" . uncomment-region))
 
 ;; Turn off scrollbar
@@ -103,18 +102,28 @@
 (set-frame-parameter (selected-frame) 'alpha '(92 . 92))
 (add-to-list 'default-frame-alist '(alpha . (92 . 92)))
 
+;; Start Evil Mode
+;; package-install: evil
+(evil-mode)
+
+;; Have Emacs State start instead of Insert Mode
+(defalias 'evil-insert-state 'evil-emacs-state)
+
 ;; Set the escape key for evil mode and start
 ;; package-install: evil-escape
 (evil-escape-mode)
 (setq-default evil-escape-key-sequence "jk")
 
-;; Start Evil Mode 
-;; package-install: evil
-(evil-mode)
+;; Turn on evil surround mode
+;; package-install: evil-surround
+(require 'evil-surround)
+(global-evil-surround-mode 1)
 
 ;; Evil Magit
 ;; package-install: magit, evil-magit
 (evil-magit-init)
+(bind-keys*
+ ("C-q C-q" . magit-status))
 
 ;; Other stuff
 (custom-set-variables
@@ -129,11 +138,10 @@
  '(blink-cursor-mode nil)
  '(cursor-type (quote box))
  '(custom-enabled-themes (quote (manoj-dark)))
- '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
+    (blank-mode flycheck-color-mode-line flycheck-pycheckers evil-surround evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
  '(paradox-github-token t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -162,6 +170,9 @@
 (require 'ido)
 (ido-mode t)
 
+;; No tabs
+(setq-default indent-tabs-mode nil)
+
 ;; Start powerline
 ;; (require 'powerline)
 ;; (powerline-center-theme)
@@ -171,3 +182,5 @@
 ;;                : zone-rainbow
 ;;                : zone-nyan
 ;;                : 2048-game
+
+(setq-default indent-tabs-mode nil)
