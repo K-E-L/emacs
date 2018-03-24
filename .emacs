@@ -7,7 +7,7 @@
 ;; add MELPA to repository list
 ;; (add-to-list 'package-archives
 ;; 	     '("melpa" . "https://melpa.org/packages/"))
-;; (when (< emacs-major-version 24)
+;; (when (< emacs-major-version 24) 
 
 ;; the MELPA that works on Windows 10
 (when (>= emacs-major-version 24)
@@ -53,15 +53,10 @@
 ;; Multiple cursors!!!
 ;; package-install: multiple-cursors
 (require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C-S-v") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-
-;; Turn off mouse
-;; package-install: disable-mouse
-;; (require 'disable-mouse)
-;; (global-disable-mouse-mode)
+;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;; Expand region
 ;; package-install: expand-region
@@ -69,8 +64,8 @@
 (global-set-key (kbd "C-;") 'er/expand-region)
 (setq shift-select-mode nil)
 
-;; Aggressive Indent
-;; package-install: aggressive-indent
+;; Aggressive Indent 
+;; package-install: aggressive-indent 
 (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 (add-hook 'css-mode-hook #'aggressive-indent-mode)
 
@@ -92,8 +87,22 @@
 ;; Comment / Uncomment Region key binding
 ;; package-install: use-package
 (bind-keys*
- ("C-x C-x" . comment-region)
+ ("C-c C-c" . comment-region)
+
  ("C-u C-u" . uncomment-region))
+
+;; Keybindings for goto-last-change
+(bind-keys*
+ ("C-." . goto-last-change))
+
+;; Keybindings for highlight changes or view whitespace
+(bind-keys*
+ ("C-," . minimap-mode))
+;; ("C-," . blank-mode))
+;; ("C-," . highlight-changes-mode))
+
+;; minimap on the right
+(setq minimap-window-location 'right)
 
 ;; Turn off scrollbar
 (scroll-bar-mode -1)
@@ -102,28 +111,37 @@
 (set-frame-parameter (selected-frame) 'alpha '(92 . 92))
 (add-to-list 'default-frame-alist '(alpha . (92 . 92)))
 
+;; package-install: beacon
+(beacon-mode 1)
+
+;; package-install: indent-guide
+(indent-guide-global-mode)
+
+;; electric pair
+(electric-pair-mode)
+
 ;; Start Evil Mode
 ;; package-install: evil
-(evil-mode)
+;; (evil-mode)
 
-;; Have Emacs State start instead of Insert Mode
-(defalias 'evil-insert-state 'evil-emacs-state)
+;; ;; Have Emacs State start instead of Insert Mode
+;; (defalias 'evil-insert-state 'evil-emacs-state)
 
-;; Set the escape key for evil mode and start
-;; package-install: evil-escape
-(evil-escape-mode)
-(setq-default evil-escape-key-sequence "jk")
+;; ;; Set the escape key for evil mode and start
+;; ;; package-install: evil-escape
+;; (evil-escape-mode)
+;; (setq-default evil-escape-key-sequence "jk")
 
-;; Turn on evil surround mode
-;; package-install: evil-surround
-(require 'evil-surround)
-(global-evil-surround-mode 1)
+;; ;; Turn on evil surround mode
+;; ;; package-install: evil-surround
+;; (require 'evil-surround)
+;; (global-evil-surround-mode 1)
 
-;; Evil Magit
-;; package-install: magit, evil-magit
-(evil-magit-init)
-(bind-keys*
- ("C-q C-q" . magit-status))
+;; ;; Evil Magit
+;; ;; package-install: magit, evil-magit
+;; (evil-magit-init)
+;; (bind-keys*
+;;  ("C-q C-q" . magit-status))
 
 ;; Other stuff
 (custom-set-variables
@@ -135,13 +153,19 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
+ '(beacon-blink-delay 0.15)
+ '(beacon-blink-duration 0.35)
+ '(beacon-mode t)
+ '(beacon-size 50)
  '(blink-cursor-mode nil)
  '(cursor-type (quote box))
  '(custom-enabled-themes (quote (manoj-dark)))
  '(menu-bar-mode nil)
+ '(minimap-always-recenter nil)
+ '(minimap-mode t)
  '(package-selected-packages
    (quote
-    (blank-mode flycheck-color-mode-line flycheck-pycheckers evil-surround evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
+    (minimap indent-guide beacon focus rainbow-delimiters redo+ blank-mode flycheck-color-mode-line flycheck-pycheckers evil-surround evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
  '(paradox-github-token t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -149,9 +173,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "PfEd" :family "DejaVu Sans Mono")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "PfEd" :family "DejaVu Sans Mono"))))
+ '(minimap-active-region-background ((t (:background "gray15")))))
 
-;; Set font size
+;; Set font size 
 (set-face-attribute 'default nil :height 115)
 
 ;; Set Internal Window Borders
@@ -181,6 +206,6 @@
 ;; package-install: pacmacs
 ;;                : zone-rainbow
 ;;                : zone-nyan
-;;                : 2048-game
+;;                : 2048-game  
 
 (setq-default indent-tabs-mode nil)
