@@ -165,7 +165,7 @@
  '(minimap-mode t)
  '(package-selected-packages
    (quote
-    (minimap indent-guide beacon focus rainbow-delimiters redo+ blank-mode flycheck-color-mode-line flycheck-pycheckers evil-surround evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
+    (elpy minimap indent-guide beacon focus rainbow-delimiters redo+ blank-mode flycheck-color-mode-line flycheck-pycheckers evil-surround evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
  '(paradox-github-token t)
  '(tool-bar-mode nil))
 (custom-set-faces
