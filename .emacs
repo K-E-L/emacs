@@ -27,6 +27,42 @@
 (ac-config-default)
 
 ;; start yasnippet with emacs
+;; package-install: yasnippet
+(require 'yasnippet)
+(yas-global-mode t)
+(defun my:ac-c-header-init ()
+  ;; (require 'auto-complete-c-header)
+  ;; (add-to-list 'ac-sources 'ac-source-c-headers))
+
+  (require 'auto-complete-c-headers)
+  (add-to-list 'ac-sources 'ac-source-c-headers)
+  (setq achead:include-directories
+        (append '("/usr/include/c++/4.8"
+                  "/usr/include/x86_64-linux-gnu/c++/4.8"
+                  "/usr/include/c++/4.8/backward"
+                  "/usr/lib/gcc/x86_64-linux-gnu/4.8/include"
+                  "/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed"
+                  "/usr/include/x86_64-linux-gnu")
+                achead:include-directories)))
+
+
+;; now let's call this function from c/c++ hooks
+(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+(add-hook 'c-mode-hook 'my:ac-c-header-init)
+
+;; Relative line numbers!
+;; (require 'linum-relative)
+;; (linum-mode)
+
+;; Multiple cursors!!!
+;; package-install: multiple-cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-v") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; Expand region
 ;; package-install: expand-region
 (require 'expand-region)
 (global-set-key (kbd "C-;") 'er/expand-region)
@@ -113,7 +149,6 @@
 ;;  ("C-0" . bookmark-set)
 ;;  ("C--" . bookmark-delete))
 
-;; better minimize / maximize
 (bind-keys*
  ("C--" . text-scale-decrease)
  ("C-=" . text-scale-increase))
