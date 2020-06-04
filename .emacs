@@ -149,6 +149,7 @@
 ;;  ("C-0" . bookmark-set)
 ;;  ("C--" . bookmark-delete))
 
+;; Better minimize / maximize 
 (bind-keys*
  ("C--" . text-scale-decrease)
  ("C-=" . text-scale-increase))
