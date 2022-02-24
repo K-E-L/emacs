@@ -4,14 +4,7 @@
 ;; start package.el with emacs
 (require 'package)
 
-;; the MELPA that works on Windows 10
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (package-initialize)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;; initialize package.el
 (package-initialize)
@@ -123,36 +116,44 @@
 ;; electric pair
 (electric-pair-mode)
 
-;; package-install: helm-gtags
-(setq
- helm-gtags-ignore-case t
- helm-gtags-auto-update t
- helm-gtags-use-input-at-cursor t
- helm-gtags-pulse-at-cursor t
- helm-gtags-prefix-key "\C-cg"
- helm-gtags-suggested-key-mapping t
- )
-
-(require 'helm-gtags)
-;; Enable helm-gtags-mode
-(add-hook 'dired-mode-hook 'helm-gtags-mode)
-(add-hook 'eshell-mode-hook 'helm-gtags-mode)
-(add-hook 'c-mode-hook 'helm-gtags-mode)
-(add-hook 'c++-mode-hook 'helm-gtags-mode)
-(add-hook 'asm-mode-hook 'helm-gtags-mode)
-
-(define-key helm-gtags-mode-map (kbd "C-,") 'helm-gtags-dwim)
-
-;; ;; helm-bookmarks
-;; (bind-keys*
-;;  ("C-9" . helm-bookmarks)
-;;  ("C-0" . bookmark-set)
-;;  ("C--" . bookmark-delete))
-
 ;; Better minimize / maximize 
 (bind-keys*
  ("C--" . text-scale-decrease)
  ("C-=" . text-scale-increase))
+
+;; Better minimize / maximize 
+(bind-keys*
+ ("C-x n" . buffer-menu))
+
+;; set PATH environment variables to match shell
+(defun set-exec-path-from-shell-PATH ()
+  "Set up Emacs' `exec-path' and PATH environment variable to match
+that used by the user's shell.
+This is particularly useful under Mac OS X and macOS, where GUI
+apps are not started from a shell."
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string
+			  "[ \t\n]*$" "" (shell-command-to-string
+					  "$SHELL --login -c 'echo $PATH'"
+					  ))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+(set-exec-path-from-shell-PATH)
+
+;; Tide for typescript
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (company-mode +1))
+(setq company-tooltip-align-annotations t)
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
 
 ;; From M-x customize
 (custom-set-variables
@@ -169,12 +170,11 @@
  '(beacon-mode t)
  '(beacon-size 50)
  '(blink-cursor-mode nil)
- '(cursor-type (quote box))
- '(custom-enabled-themes (quote (manoj-dark)))
+ '(cursor-type 'box)
+ '(custom-enabled-themes '(manoj-dark))
  '(menu-bar-mode nil)
  '(package-selected-packages
-   (quote
-    (lorem-ipsum rjsx-mode js2-mode helm-gtags auto-complete-c-headers web-mode-edit-element web-mode elpy indent-guide beacon focus rainbow-delimiters redo+ blank-mode flycheck-color-mode-line flycheck-pycheckers evil-surround evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode)))
+   '(prettier company tide typescript-mode cmake-mode vterm js2-refactor eslint-fix vue-html-mode vue-mode dumb-jump lorem-ipsum rjsx-mode js2-mode auto-complete-c-headers web-mode-edit-element web-mode elpy indent-guide beacon focus rainbow-delimiters redo+ blank-mode flycheck-color-mode-line flycheck-pycheckers evil-surround evil-magit powerline evil-escape evil evil-visual-mark-mode use-package php-mode magit pkgbuild-mode multi-term paradox racket-mode emmet-mode sed-mode sml-mode tronesque-theme 2048-game chess zone-rainbow zone-nyan rainbow-mode pacmacs flycheck yasnippet multiple-cursors linum-relative expand-region emojify disable-mouse auto-complete aggressive-indent ace-jump-mode))
  '(paradox-github-token t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -183,9 +183,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "PfEd" :family "DejaVu Sans Mono"))))
- '(ac-gtags-candidate-face ((t (:inherit ac-candidate-face :background "cyan" :foreground "black"))))
- '(ac-gtags-selection-face ((t (:background "cyan" :foreground "black"))))
- '(ggtags-global-line ((t (:inherit nil :background "cyan" :foreground "black"))))
  '(minimap-active-region-background ((t (:background "gray15")))))
 
 ;; Set font size
@@ -215,3 +212,7 @@
 ;;                : zone-rainbow
 ;;                : zone-nyan
 ;;                : 2048-game
+
+;; dumb-jump
+;; package-install: dumb-jump
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
